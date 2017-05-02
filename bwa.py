@@ -32,8 +32,17 @@ def occ_cal(seq, header, header_size):
 def occur(base, idx):
     occ_cal(seq, header, header_size)
 
-def bwt():
-    pass
+def bwt(seq):
+    seq = seq + '$'
+    sa = [] # suffix array
+    for i in range(len(seq)):
+        seq = seq[1:] + seq[0]
+        sa.append(seq)
+    sa.sort()
+    out = ''
+    for i in range(len(seq)):
+        out += sa[i][len(seq)-1]
+    return out
 
 def backwardExt(biIntv, base):
     # bi-interval: [Il(Y ), Il(Y_), Is(Y )]

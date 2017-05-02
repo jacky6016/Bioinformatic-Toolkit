@@ -1,6 +1,6 @@
-ref_seq = ""
+ref_seq = 'ACTTCGACTTG'
 acc = acc_cal(ref_seq)
-header = build_occ_header(ref_seq, )
+header = build_occ_header(ref_seq, 1)
 
 
 input_reads = [] # list of strings
@@ -11,11 +11,12 @@ def wc_comp(seq):
 
 def acc_cal(seq):
     acc = {'A': 0, 'C': 0, 'G': 0, 'T': 0}
-    for i in range(seq):
-        acc[seq[i]] += 1
-    acc['C'] += acc['A']
-    acc['G'] += acc['C']
-    acc['T'] += acc['G']
+    for i in range(len(seq)):
+        acc[seq[i]] += 1    
+    acc['T'] = acc['A'] + acc['C'] + acc['G']
+    acc['G'] = acc['A'] + acc['C']
+    acc['C'] = acc['A']
+    acc['A'] = 0
     return acc
 
 def build_occ_header(seq, header_size):
@@ -27,7 +28,7 @@ def build_occ_header(seq, header_size):
     return header
 
 def occ_cal(seq, header, header_size):
-    pass
+    
 
 def occur(base, idx):
     occ_cal(seq, header, header_size)

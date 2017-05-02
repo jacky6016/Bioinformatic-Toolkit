@@ -1,6 +1,9 @@
 ref_seq = 'ACTTCGACTTG'
-acc = acc_cal(ref_seq)
-occ = occ_cal(ref_seq)
+wc_seq = ref_seq + wc_comp(ref_seq)
+sa = []
+acc = acc_cal(wc_seq)
+bwt_seq = bwt(wc_seq)
+occ = occ_cal(bwt_seq)
 # header = build_occ_header(ref_seq, 1)
 
 
@@ -18,11 +21,13 @@ def acc_cal(seq):
     acc['G'] = acc['A'] + acc['C']
     acc['C'] = acc['A']
     acc['A'] = 0
+    acc['N'] = 0
+    acc['$'] = 0
     return acc
 
 def occ_cal(seq):
     occ = []
-    entry = {'A': 0, 'C': 0, 'G': 0, 'T': 0}
+    entry = {'$': 0, 'A': 0, 'C': 0, 'G': 0, 'T': 0, 'N': 0}
     for i in range(len(seq)):       
         entry[seq[i]] += 1
 	occ.append(entry.copy())
@@ -44,7 +49,7 @@ def occur(base, idx):
 
 def bwt(seq):
     seq = seq + '$'
-    sa = [] # suffix array
+    global sa 
     for i in range(len(seq)):
         seq = seq[1:] + seq[0]
         sa.append(seq)
@@ -55,18 +60,17 @@ def bwt(seq):
     return out
 
 def backwardExt(biIntv, base):
-    # bi-interval: [Il(Y ), Il(Y_), Is(Y )]
-    # Σ = {$, A, C, G, T, N}
+    # bi-interval: [Il(Y), Il(^Y), Is(Y)]
+    char = ['$', 'A', 'C', 'G', 'T', 'N']
     k = s = l = [0] * 6
     for b in range(6):
-        k[b] = acc[b] + occur[b][biIntv[0] - 1]
-        s[b] = occur(b, biIntv[0] + biIntv[2] - 1) - occur(b, biIntv[0] - 1)
-    l[0] = biIntv.[1]
+        k[b] = acc[char[b]] + occ[biIntv[0] - 1][char[b]]
+        s[b] = occ[biIntv[0] + biIntv[2] - 1][char[b]] - occ[biIntv[0] - 1][char[b]]
+    l[0] = biIntv[1]
     l[4] = l[0] + s[0]
     for b in range(3,0,-1):
         l[b] = l[b+1] + s[b+1]
     l[5] = l[1] + s[1]
-
     return [k[base], l[base], s[base]]
 
 def forwardExt(biIntv, base):

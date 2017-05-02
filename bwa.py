@@ -1,6 +1,7 @@
 ref_seq = 'ACTTCGACTTG'
 acc = acc_cal(ref_seq)
-header = build_occ_header(ref_seq, 1)
+occ = occ_cal(ref_seq)
+# header = build_occ_header(ref_seq, 1)
 
 
 input_reads = [] # list of strings
@@ -19,6 +20,14 @@ def acc_cal(seq):
     acc['A'] = 0
     return acc
 
+def occ_cal(seq):
+    occ = []
+    entry = {'A': 0, 'C': 0, 'G': 0, 'T': 0}
+    for i in range(len(seq)):       
+        entry[seq[i]] += 1
+	occ.append(entry.copy())
+    return occ
+
 def build_occ_header(seq, header_size):
     header = [[{'A': 0, 'C': 0, 'G': 0, 'T': 0}]] # list of dictionaries
     for i in range(1, len(seq)/header_size):
@@ -27,11 +36,11 @@ def build_occ_header(seq, header_size):
             header[i][seq[i*header_size+j]] += 1
     return header
 
-def occ_cal(seq, header, header_size):
-    
+def occ_cal_header(seq, header, header_size):
+    pass
 
 def occur(base, idx):
-    occ_cal(seq, header, header_size)
+    occ_cal_header(seq, header, header_size)
 
 def bwt(seq):
     seq = seq + '$'
@@ -50,7 +59,7 @@ def backwardExt(biIntv, base):
     # Σ = {$, A, C, G, T, N}
     k = s = l = [0] * 6
     for b in range(6):
-        k[b] = acc[b] + occur(b, biIntv[0] - 1)
+        k[b] = acc[b] + occur[b][biIntv[0] - 1]
         s[b] = occur(b, biIntv[0] + biIntv[2] - 1) - occur(b, biIntv[0] - 1)
     l[0] = biIntv.[1]
     l[4] = l[0] + s[0]

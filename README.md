@@ -1,1 +1,2 @@
-# A Toolkit for processing bioinformatic data/integrating bioinformatic tools
+# Bioinformatic-Toolkit
+A Toolkit for processing bioinformatic data/integrating bioinformatic tools
